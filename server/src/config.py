@@ -1,7 +1,10 @@
-from pathlib import path
+from pathlib import Path
 
+BASE_DIR = Path(__file__).resolve().parent
 class Config:
   DEBUG = False
+  TESTING = False
 
 class DevelopmentConfig(Config):
-  pass
+  DEBUG = True
+  DEVELOPMENT = True
