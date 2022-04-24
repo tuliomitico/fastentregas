@@ -10,6 +10,9 @@ MarkupSafe = "2.0.1"
 Flask = "1.1.4"
 Flask-Cors = "3.0.8"
 ariadne = "0.14.0"
+python-dotenv = "^0.20.0"
+psycopg2 = "^2.9.3"
+SQLAlchemy = "~1.4.22"
 
 [tool.poetry.dev-dependencies]
 pytest = "^5.2"
