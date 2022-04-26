@@ -13,6 +13,8 @@ ariadne = "0.14.0"
 python-dotenv = "^0.20.0"
 psycopg2 = "^2.9.3"
 SQLAlchemy = "~1.4.22"
+Flask-SQLAlchemy = "^2.5.1"
+alembic = "^1.7.7"
 
 [tool.poetry.dev-dependencies]
 pytest = "^5.2"
