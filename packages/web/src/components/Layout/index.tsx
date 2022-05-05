@@ -7,7 +7,7 @@ export default function Layout({ children }) {
     <>
       <NavBar />
       <main>{children}</main>
-      <Copyright mt={5} />
+      <Copyright sx={{ mt: 5 }} />
     </>
   );
 }
