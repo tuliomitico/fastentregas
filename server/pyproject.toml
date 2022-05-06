@@ -23,6 +23,7 @@ SQLAlchemy-Utils = "^0.38.2"
 PyJWT = "^2.3.0"
 passlib = "^1.7.4"
 bcrypt = "^3.2.2"
+marshmallow-enum = "^1.5.1"
 
 [tool.poetry.dev-dependencies]
 pytest = "^5.2"
