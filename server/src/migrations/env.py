@@ -4,9 +4,11 @@ from sqlalchemy import engine_from_config
 from sqlalchemy import pool
 
 from alembic import context
+from alembic.script import ScriptDirectory
 
-from database.db import engine
+from database.db import engine, Base
 from models.user import User
+from models.delivery import Delivery
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
@@ -21,7 +23,7 @@ if config.config_file_name is not None:
 # for 'autogenerate' support
 # from myapp import mymodel
 # target_metadata = mymodel.Base.metadata
-target_metadata = [User.metadata]
+target_metadata = Base.metadata
 
 # other values from the config, defined by the needs of env.py,
 # can be acquired:
@@ -62,6 +64,18 @@ def run_migrations_online():
 
     """
     def process_revision_directives(context, revision, directives):
+            migration_script = directives[0]
+            head_revision = ScriptDirectory.from_config(context.config).get_current_head()
+            if head_revision is None:
+              # edge case with first migration
+              new_rev_id = 1
+            else:
+              last_rev_id = int(head_revision.lstrip('0'))
+              # default branch with incrementation
+              new_rev_id = last_rev_id + 1
+            # fill zeros up to 4 digits: 1 -> 0001
+            migration_script.rev_id = '{0:04}'.format(new_rev_id)
+
             if config.cmd_opts.autogenerate:
                 script = directives[0]
                 if script.upgrade_ops.is_empty():

@@ -1,6 +1,6 @@
 """Create user
 
-Revision ID: 67101680305f
+Revision ID: 0001
 Revises:
 Create Date: 2022-04-28 12:24:05.657157
 
@@ -11,7 +11,7 @@ import sqlalchemy_utils
 
 
 # revision identifiers, used by Alembic.
-revision = '67101680305f'
+revision = '0001'
 down_revision = None
 branch_labels = None
 depends_on = None
