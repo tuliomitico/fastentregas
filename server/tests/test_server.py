@@ -4,7 +4,7 @@ from src import __version__
 
 
 def test_version():
-    assert __version__ == '0.1.0'
+  assert __version__ == '0.1.0'
 
 def test_index_code(client: FlaskClient):
   response = client.get('/')
@@ -12,3 +12,6 @@ def test_index_code(client: FlaskClient):
 
 def test_config_app(app: Flask):
   assert app.config.get('TESTING') is not False
+
+def test_secret_key(app: Flask):
+  assert app.config.get('SECRET_KEY') == 'stress'
