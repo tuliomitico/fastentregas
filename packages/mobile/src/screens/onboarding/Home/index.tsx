@@ -7,8 +7,10 @@ import { useForm } from 'react-hook-form';
 import Input from '../../../components/Input';
 
 import { Container, HomeText } from './styles';
+import { useAuth } from '../../../hooks/auth';
 
 const Home: React.FC = () => {
+  const { signIn } = useAuth();
   const schema = Yup.object().shape({
     telephone: Yup.string()
       .required('Telefone obrigatório')
@@ -30,6 +32,8 @@ const Home: React.FC = () => {
     },
   });
   const handleLogin = async data => {
+    console.log(data);
+
     await signIn(data);
   };
   return (
@@ -40,6 +44,13 @@ const Home: React.FC = () => {
         control={control}
         name="telephone"
         label="Telefone"
+        inputMask
+        type={'cel-phone'}
+        options={{
+          maskType: 'BRL',
+          withDDD: true,
+          dddMask: '(99) ',
+        }}
         autoCapitalize="none"
         keyboardType="phone-pad"
         leftIcon={<Icon name="person" size={24} color="white" />}
@@ -55,7 +66,7 @@ const Home: React.FC = () => {
         secureTextEntry
         color="purple"
       />
-      <Button />
+      <Button onPress={handleSubmit(handleLogin)}>Login</Button>
     </Container>
   );
 };
