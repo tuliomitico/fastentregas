@@ -7,7 +7,12 @@ import React, {
 import { InputProps } from '@rneui/base';
 import { Controller, FieldErrors } from 'react-hook-form';
 
-import { BaseInput, Container } from './styles';
+import { BaseInput, Container, Error } from './styles';
+import {
+  TextInputMask,
+  TextInputMaskOptionProp,
+  TextInputMaskTypeProp,
+} from 'react-native-masked-text';
 
 interface CustomInputProps extends InputProps {
   name: string;
@@ -17,7 +22,9 @@ interface CustomInputProps extends InputProps {
   color: string;
   styleContainer?: object;
   inputMask?: boolean;
-  type:
+  type?: TextInputMaskTypeProp;
+  options?: TextInputMaskOptionProp;
+  disabled?: boolean;
 }
 
 interface InputRef {
@@ -25,7 +32,19 @@ interface InputRef {
 }
 
 const Input: React.ForwardRefRenderFunction<InputRef, CustomInputProps> = (
-  { errors, name, control, inputMask, ...props },
+  {
+    errors,
+    name,
+    control,
+    label,
+    color,
+    styleContainer,
+    disabled,
+    inputMask,
+    type,
+    options,
+    ...props
+  },
   ref,
 ) => {
   const inputElementRef = useRef<any>(null);
@@ -43,10 +62,47 @@ const Input: React.ForwardRefRenderFunction<InputRef, CustomInputProps> = (
     <Controller
       control={control}
       render={({ field: { onChange, onBlur, value } }) => (
-        <Container>
-          <BaseInput />
+        <Container style={styleContainer}>
+          {inputMask && type ? (
+            <TextInputMask
+              ref={inputElementRef}
+              type={type}
+              options={options}
+              includeRawValueInChangeText
+              onBlur={onBlur}
+              value={value}
+              testID="test-mask-input-id"
+              onChangeText={(maskedValue, unmaskedValue) => {
+                setRawValue(unmaskedValue);
+                onChange(maskedValue);
+              }}
+              customTextInput={BaseInput}
+              customTextInputProps={{
+                rawValue,
+                error: errors[name],
+                label,
+                ...props,
+              }}
+            />
+          ) : (
+            <BaseInput
+              disabled={disabled}
+              errorMessage={errors[name]}
+              onChangeText={onChange}
+              onBlur={onBlur}
+              returnKeyType="next"
+              selectionColor={'gray'}
+              label={label}
+              value={value}
+              {...props}
+            />
+          )}
+          {errors[name] ? <Error>{errors[name].message}</Error> : null}
         </Container>
       )}
+      name={name}
+      rules={{ required: true }}
+      defaultValue=""
     />
   );
 };
