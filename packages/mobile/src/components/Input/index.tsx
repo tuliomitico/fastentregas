@@ -87,7 +87,6 @@ const Input: React.ForwardRefRenderFunction<InputRef, CustomInputProps> = (
           ) : (
             <BaseInput
               disabled={disabled}
-              errorMessage={errors[name]}
               onChangeText={onChange}
               onBlur={onBlur}
               returnKeyType="next"

@@ -7,7 +7,7 @@ export const Container = styled.View`
 
 export const Error = styled.Text`
   font-size: 14px;
-  color: 'red';
+  color: red;
   padding: 4px 4px 0 4px;
 `;
 
