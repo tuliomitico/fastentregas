@@ -1,15 +1,13 @@
 import styled from 'styled-components/native';
 
 export const Container = styled.View`
-  flex: 1;
   background-color: ${({ theme }) => theme.COLORS.PRIMARY};
-  align-items: center;
-  justify-content: center;
   padding: 0 16px;
+  height: 100%;
 `;
 
 export const HomeText = styled.Text`
   font-weight: bold;
-  font-size: 72px;
+  font-size: 32px;
   color: #f00;
 `;
