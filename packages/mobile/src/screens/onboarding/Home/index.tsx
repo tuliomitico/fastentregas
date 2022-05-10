@@ -1,13 +1,13 @@
 import React from 'react';
-import { useNavigation } from '@react-navigation/native';
-import { Button, Icon } from '@rneui/base';
+import { Icon } from '@rneui/base';
 import * as Yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
-import Input from '../../../components/Input';
+import { MaskService } from 'react-native-masked-text';
 
-import { Container, HomeText } from './styles';
-import { useAuth } from '../../../hooks/auth';
+import Input from '../../../components/Input';
+import { Container, HomeText, LoginButton } from './styles';
+import { SignInCredentials, useAuth } from '../../../hooks/auth';
 
 const Home: React.FC = () => {
   const { signIn } = useAuth();
@@ -17,7 +17,7 @@ const Home: React.FC = () => {
       .min(11, 'Telefone não válido'),
     password: Yup.string()
       .required('Senha obrigatória')
-      .min(8, 'A senha deve ser maior que 8 dígitos'),
+      .min(3, 'A senha deve ser maior que 8 dígitos'),
   });
   const {
     control,
@@ -31,10 +31,15 @@ const Home: React.FC = () => {
       password: '',
     },
   });
-  const handleLogin = async data => {
-    console.log(data);
+  const handleLogin = async (data: SignInCredentials): Promise<void> => {
+    const { telephone: maskedTelephone, password } = data;
+    const telephone = MaskService.toRawValue('cel-phone', maskedTelephone);
+    console.log(telephone);
 
-    await signIn(data);
+    await signIn({
+      telephone,
+      password,
+    });
   };
   return (
     <Container>
@@ -66,7 +71,7 @@ const Home: React.FC = () => {
         secureTextEntry
         color="purple"
       />
-      <Button onPress={handleSubmit(handleLogin)}>Login</Button>
+      <LoginButton title={'Entrar'} onPress={handleSubmit(handleLogin)} />
     </Container>
   );
 };

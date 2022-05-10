@@ -4,10 +4,12 @@ import General from '../../screens/Deliver/General';
 import Paths from '../../screens/Deliver/Paths';
 import { Header, Avatar } from '@rneui/base';
 import { SafeAreaView, Text } from 'react-native';
+import { useAuth } from '../../hooks/auth';
 
 const DeliverTab = createMaterialTopTabNavigator();
 
 export default function IndexRouter() {
+  const { signOut } = useAuth();
   return (
     <SafeAreaView style={{ height: '100%' }}>
       <Header
@@ -20,6 +22,7 @@ export default function IndexRouter() {
             source={{ uri: 'https://www.github.com/maykbrito.png' }}
             size="medium"
             rounded
+            onPress={signOut}
           />
         }
         placement="right"

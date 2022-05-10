@@ -1,4 +1,13 @@
-import React, { createContext, useContext, useEffect, useState } from 'react';
+import api from '@fastentregas/axios-config';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import React, {
+  createContext,
+  useContext,
+  useEffect,
+  useState,
+  useCallback,
+} from 'react';
+import AuthService from '../services/AuthService';
 
 export interface SignInCredentials {
   telephone: string;
@@ -6,7 +15,7 @@ export interface SignInCredentials {
 }
 
 interface AuthContextData {
-  user: string | Record<any, string>;
+  // user: string | Record<any, string>;
   token: string;
   signIn(credentials: SignInCredentials): Promise<void>;
   signOut(): void;
@@ -20,10 +29,39 @@ export const AuthProvider: React.FC = ({ children }) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    async function loadStorageData();
+    async function loadStorageData() {
+      const [token] = await AsyncStorage.multiGet(['@Fast:token']);
+      if (token[1]) {
+        api.defaults.headers.authorization = `Bearer ${token[1]}`;
+        setData({ token: token[1] });
+      }
+      setLoading(false);
+    }
+    loadStorageData();
+  }, []);
+
+  const signIn = useCallback(async ({ telephone, password }) => {
+    try {
+      const { data } = await AuthService.signIn({ telephone, password });
+      const { token } = data;
+      await AsyncStorage.multiSet([['@Fast:token', token]]);
+      api.defaults.headers.authorization = `Bearer ${token}`;
+      setData({ token });
+    } catch (err) {
+      console.error(err);
+      throw new Error(err);
+    }
+  }, []);
+  const signOut = useCallback(async () => {
+    await AsyncStorage.multiRemove(['@Fast:token']);
+    setData({ token: '' });
   }, []);
   return (
-    <AuthContext.Provider value={{ loading }}>{children}</AuthContext.Provider>
+    <AuthContext.Provider
+      value={{ loading, signIn, token: data.token, signOut }}
+    >
+      {children}
+    </AuthContext.Provider>
   );
 };
 
