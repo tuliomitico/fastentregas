@@ -12,8 +12,8 @@ class StatusType(enum.Enum):
   closed = 2
 class Delivery(Base):
   __tablename__ = 'delivery'
-
-  id = sa.Column(sa.BigInteger,primary_key=True)
+  __table_args__ = {'sqlite_autoincrement': True}
+  id = sa.Column(sa.Integer,primary_key=True)
   hour = sa.Column(sa.DateTime(timezone=True),server_default=sa.func.now())
   # address
   telephone=sa.Column(sa.Text)
@@ -21,20 +21,21 @@ class Delivery(Base):
   shop=sa.Column(sa.Text)
   status = sa.Column(saut.ChoiceType(StatusType,impl=sa.Integer()))
 
-  def __init__(self, id: int, telephone: str, name: str, shop: str, status: int,**kwargs):
-    self.id = id
-
+  def __init__(
+    self,
+    telephone: str,
+    name: str,
+    shop: str,
+    status: int,
+    *args,
+    **kwargs):
+    super(Delivery,self).__init__(*args,**kwargs)
     self.telephone = telephone
     self.name = name
-
     self.shop = shop
-
     self.status = status
 
   def create(self):
     db_session.add(self)
     db_session.commit()
     return self
-   # 0 seria não pego
-   # 1 já foi pego
-   # 2 finalizado por motivo qlqr
