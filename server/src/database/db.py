@@ -31,3 +31,8 @@ db_session = scoped_session(sessionmaker(autocommit=False,
 Base = declarative_base()
 # We will need this for querying
 Base.query = db_session.query_property()
+
+def init_db(engine=engine):
+  db_session.configure(bind=engine)
+  Base.metadata.bind = engine
+  Base.metadata.create_all()

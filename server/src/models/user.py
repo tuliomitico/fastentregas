@@ -13,9 +13,10 @@ class User(Base):
     created_at = sa.Column(sa.DateTime(timezone=True),server_default=sa.func.now())
     updated_at = sa.Column(sa.DateTime(timezone=True),server_default=sa.func.now(),onupdate=sa.func.now())
 
-    def __init__(self,name: str,password: str,**kwargs) -> None:
+    def __init__(self, name: str, telephone: str, password: str, *args, **kwargs) -> None:
         super(User,self).__init__(**kwargs)
         self.name = name
+        self.telephone = telephone
         self.password = password
 
     def create(self):
