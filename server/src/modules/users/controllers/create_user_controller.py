@@ -9,7 +9,7 @@ class CreateUserController():
   def handle(self):
     data = request.get_json()
     try:
-      user = CreateUserService().execute(data['telephone'],data['password'])
+      user = CreateUserService().execute(data['name'],data['telephone'],data['password'])
     except Exception as e:
       return jsonify(error=str(e)), HTTPStatus.BAD_REQUEST
     user_schema=UserSchema(load_instance=True)
