@@ -1,11 +1,11 @@
 from flask import Blueprint, request
 
 from middlewares.auth import auth
-from models.delivery import Delivery
+from modules.deliverys.controllers.create_delivery_controller import CreateDeliveryController
+from modules.deliverys.controllers.get_delivery_controller import GetDeliveryController
 from modules.users.controllers.authenticate_user_controller import AuthenticateUserController
 from modules.users.controllers.create_user_controller import CreateUserController
 from modules.users.controllers.get_user_controller import GetUserController
-from schemas.delivery_schema import DeliverySchema
 
 blp = Blueprint('index',__name__)
 blp_auth = Blueprint('auth',__name__)
@@ -30,16 +30,12 @@ def register():
 # ======================
 @blp_delivery.route('/deliver',methods=['GET','POST'])
 def delivery():
-  delivery_schema = DeliverySchema()
-  deliverys_schema = DeliverySchema(many=True)
   if request.method == 'POST':
-    data = request.get_json()
-    delivery_data = delivery_schema.load(data)
-    delivery = Delivery(**delivery_data).create()
-    return {'delivery':delivery_schema.dump(delivery)}, 202
+    delivery = CreateDeliveryController().handle()
+    return delivery
   else:
-    delivery = Delivery.query.all()
-    return {'deliverys': deliverys_schema.dump(delivery)}
+    delivery = GetDeliveryController().handle()
+    return delivery
 
 @blp.route('/')
 def index():

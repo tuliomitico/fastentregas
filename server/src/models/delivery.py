@@ -12,7 +12,6 @@ class StatusType(enum.Enum):
   closed = 2
 class Delivery(Base):
   __tablename__ = 'delivery'
-  __table_args__ = {'sqlite_autoincrement': True}
   id = sa.Column(sa.Integer,primary_key=True)
   hour = sa.Column(sa.DateTime(timezone=True),server_default=sa.func.now())
   # address
