@@ -11,6 +11,7 @@ import {
   TextField,
   Typography,
 } from '@mui/material';
+import Logo from '../assets/logo.jpeg';
 import { LockOutlined } from '@mui/icons-material';
 
 export default function Home() {
@@ -23,8 +24,7 @@ export default function Home() {
         sm={4}
         md={7}
         sx={{
-          backgroundImage:
-            'url(https://icon-icons.com/downloadimage.php?id=116465&root=1849/PNG/512/&file=delivery_116465.png)',
+          backgroundImage: `url(${Logo.src})`,
           backgroundRepeat: 'no-repeat',
           backgroundColor: t =>
             t.palette.mode === 'light'
@@ -35,7 +35,13 @@ export default function Home() {
         }}
       />
       <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
-        <Typography variant="h2" align="center">
+        <Typography
+          variant="h2"
+          component="h1"
+          align="center"
+          gutterBottom
+          color={'#132f4c'}
+        >
           Fast Entregas
         </Typography>
         <Box
@@ -54,7 +60,13 @@ export default function Home() {
             Login
           </Typography>
           <Box component="form" noValidate sx={{ mt: 1 }}>
-            <TextField margin="normal" required fullWidth id="telephone" />
+            <TextField
+              margin="normal"
+              required
+              fullWidth
+              id="telephone"
+              label="Telefone"
+            />
             <TextField
               margin="normal"
               required
