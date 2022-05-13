@@ -12,6 +12,7 @@
     "@emotion/react": "^11.9.0",
     "@emotion/styled": "^11.8.1",
     "@fastentregas/axios-config": "*",
+    "@hookform/resolvers": "^2.8.8",
     "@mui/icons-material": "^5.6.2",
     "@mui/material": "^5.6.2",
     "@mui/styled-engine-sc": "^5.6.1",
@@ -22,10 +23,15 @@
     "react": "~17.0.0",
     "react-dom": "~17.0.0",
     "react-hook-form": "^7.30.0",
-    "styled-components": "^5.3.5"
+    "react-input-mask": "^3.0.0-alpha.2",
+    "react-phone-number-input": "^3.1.52",
+    "styled-components": "^5.3.5",
+    "tp-react-web-masked-text": "^1.12.22",
+    "yup": "^0.32.11"
   },
   "devDependencies": {
     "@types/react": "^17.0.21",
+    "@types/react-input-mask": "^3.0.1",
     "@types/styled-components": "^5.1.25"
   }
 }
