@@ -7,8 +7,11 @@ import {
   TableHead,
   TableRow,
 } from '@mui/material';
+import { GetServerSideProps } from 'next';
+import { parseCookies } from 'nookies';
 import React from 'react';
 import Layout from '../components/Layout';
+import { getAPIClient } from '../services/axios';
 
 const DATA = [
   {
@@ -56,3 +59,23 @@ export default function Dashboard() {
     </Layout>
   );
 }
+
+export const getServerSideProps: GetServerSideProps = async ctx => {
+  const apiClient = getAPIClient(ctx);
+  const { 'nextauth.token': token } = parseCookies(ctx);
+
+  if (!token) {
+    return {
+      redirect: {
+        destination: '/',
+        permanent: false,
+      },
+    };
+  }
+
+  await apiClient.get('/users');
+
+  return {
+    props: {},
+  };
+};

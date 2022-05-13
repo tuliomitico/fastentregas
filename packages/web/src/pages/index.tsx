@@ -11,10 +11,40 @@ import {
   TextField,
   Typography,
 } from '@mui/material';
-import Logo from '../assets/logo.jpeg';
 import { LockOutlined } from '@mui/icons-material';
+import * as Yup from 'yup';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { useForm } from 'react-hook-form';
+import { MaskService } from 'tp-react-web-masked-text';
+
+import CustomTextField from '../components/CustomTextField';
+import Logo from '../assets/logo.jpeg';
+import { useAuth } from '../hooks/AuthContext';
 
 export default function Home() {
+  const { signIn } = useAuth();
+  const schema = Yup.object().shape({
+    telephone: Yup.string().required('Telefone obrigatório'),
+    password: Yup.string()
+      .required('Senha obrigatória')
+      .min(3, 'A senha dever ser maior que 8 dígitos'),
+  });
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({ resolver: yupResolver(schema), mode: 'onBlur' });
+  async function handleSignIn(data) {
+    const { telephone, password } = data;
+    const formattedTelephone = MaskService.toRawValue('cel-phone', telephone, {
+      dddMask: '(99) ',
+      withDDD: true,
+      maskType: 'BRL',
+    });
+    console.log(formattedTelephone);
+
+    await signIn({ telephone: formattedTelephone, password });
+  }
   return (
     <Grid container component="main" sx={{ height: '100vh' }}>
       <CssBaseline />
@@ -60,18 +90,28 @@ export default function Home() {
             Login
           </Typography>
           <Box component="form" noValidate sx={{ mt: 1 }}>
-            <TextField
+            <CustomTextField
+              name="telephone"
+              errors={errors}
+              control={control}
+              inputMask
+              mask={'(99) 9999-9999'}
               margin="normal"
               required
               fullWidth
               id="telephone"
               label="Telefone"
             />
-            <TextField
+            <CustomTextField
+              name="password"
+              errors={errors}
+              control={control}
               margin="normal"
+              type="password"
               required
               fullWidth
               id="password"
+              autoComplete="current-password"
               label="Senha"
             />
             <FormControlLabel
@@ -83,7 +123,7 @@ export default function Home() {
               fullWidth
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
-              href="/dashboard"
+              onClick={handleSubmit(handleSignIn)}
             >
               Entrar
             </Button>
