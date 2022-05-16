@@ -24,7 +24,6 @@
     "react-dom": "~17.0.0",
     "react-hook-form": "^7.30.0",
     "react-input-mask": "^3.0.0-alpha.2",
-    "react-phone-number-input": "^3.1.52",
     "styled-components": "^5.3.5",
     "tp-react-web-masked-text": "^1.12.22",
     "yup": "^0.32.11"

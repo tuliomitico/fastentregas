@@ -25,5 +25,6 @@ module.exports = {
     'space-before-function-paren': 'off',
     'react/prop-types': 'off',
     'no-use-before-define': 'off',
+    camelcase: 'warn',
   },
 };
