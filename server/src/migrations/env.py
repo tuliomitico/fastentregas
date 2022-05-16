@@ -7,6 +7,7 @@ from alembic import context
 from alembic.script import ScriptDirectory
 
 from database.db import engine, Base
+from models.address import Address
 from models.user import User
 from models.delivery import Delivery
 from models.deliveryboy import DeliveryBoy
