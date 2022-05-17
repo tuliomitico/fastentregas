@@ -8,9 +8,11 @@ from alembic.script import ScriptDirectory
 
 from database.db import engine, Base
 from models.address import Address
+from models.admin import Admin
+from models.employee import Employee
 from models.user import User
 from models.delivery import Delivery
-from models.deliveryboy import DeliveryBoy
+from models.deliveryboy import DeliveryBoy, delivery_deliveryboy
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
