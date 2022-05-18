@@ -1,6 +1,7 @@
 from flask import Blueprint, request
 
 from middlewares.auth import auth
+from modules.deliveryboy.controllers.create_delivery_boy_controller import CreateDeliveryBoyController
 from modules.deliverys.controllers.create_delivery_controller import CreateDeliveryController
 from modules.deliverys.controllers.get_delivery_controller import GetDeliveryController
 from modules.users.controllers.authenticate_user_controller import AuthenticateUserController
@@ -37,13 +38,26 @@ def delivery():
     delivery = GetDeliveryController().handle()
     return delivery
 
+# ======================
+# Delivery Boy routes
+# ======================
+@blp.route('/register/delivery_boy',methods=['POST'])
+def create_motoboy():
+  delivery_boy = CreateDeliveryBoyController().handle()
+  return delivery_boy
+
 @blp.route('/')
 def index():
   return {"Hello":"World"}, 200
 
 # ! Test route
-@blp.route('/user',methods=['GET'])
+@blp.route('/users',methods=['GET'])
 @auth.login_required
 def get_users():
   users = GetUserController().handle()
   return {**users[0],'user': auth.current_user()}, users[1]
+
+@blp.route('/user')
+@auth.login_required
+def get_current_user():
+  return {'user': {'name': auth.current_user() }}

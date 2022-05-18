@@ -2,8 +2,6 @@ from passlib.hash import bcrypt
 
 from models.user import User
 
-from database.db import db_session
-
 class CreateUserService():
   def execute(self, name: str, telephone: str, password: str):
     formatted_telephone = telephone.strip()
