@@ -5,7 +5,7 @@ import React, {
   useImperativeHandle,
 } from 'react';
 import { Control, Controller, FieldErrors, FieldValues } from 'react-hook-form';
-import { BaseTextFieldProps, TextField } from '@mui/material';
+import TextField, { BaseTextFieldProps } from '@mui/material/TextField';
 import InputMask, { BeforeMaskedStateChangeStates } from 'react-input-mask';
 
 interface CustomInputProps extends BaseTextFieldProps {
