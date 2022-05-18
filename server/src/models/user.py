@@ -9,15 +9,15 @@ class User(Base):
     id = sa.Column(saut.UUIDType(binary=False),default=uuid.uuid4,primary_key = True)
     name = sa.Column(sa.Text)
     password = sa.Column(sa.Text)
-    telephone = sa.Column(sa.Text,unique=True)
+    telephone = sa.Column(sa.Text,unique=True,nullable=False)
     created_at = sa.Column(sa.DateTime(timezone=True),server_default=sa.func.now())
     updated_at = sa.Column(sa.DateTime(timezone=True),server_default=sa.func.now(),onupdate=sa.func.now())
 
-    def __init__(self, name: str, telephone: str, password: str, *args, **kwargs) -> None:
+    def __init__(self, name: str, telephone: str, *args, **kwargs) -> None:
         super(User,self).__init__(*args,**kwargs)
         self.name = name
         self.telephone = telephone
-        self.password = password
+        # self.password = password
 
     def create(self):
         db_session.add(self)
