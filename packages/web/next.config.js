@@ -1,9 +1,3 @@
-/** @type {import('next').NextConfig} */
-const nextConfig = {
-  reactStrictMode: true,
-};
-
-module.exports = nextConfig;
 const withTM = require('next-transpile-modules')([
   '@mui/material',
   '@mui/system',
@@ -11,6 +5,7 @@ const withTM = require('next-transpile-modules')([
 ]);
 
 module.exports = withTM({
+  reactStrictMode: true,
   webpack: config => {
     config.resolve.alias = {
       ...config.resolve.alias,
