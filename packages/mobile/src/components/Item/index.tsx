@@ -17,7 +17,7 @@ export default function Item({ item, onPress, expanded }: ItemsProps) {
           <Icon name="place" size={30} />
           <ListItem.Content>
             <ListItem.Title>
-              <Text>{item.address.district}</Text>
+              {item.shop} - {item.address.district}
             </ListItem.Title>
           </ListItem.Content>
         </>

@@ -18,6 +18,7 @@ export type DeliveryDataProps = {
   id: string;
   hour: string;
   address: AddressDataProps;
+  shop: string;
 };
 
 type DeliveryData = {

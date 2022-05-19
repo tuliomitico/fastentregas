@@ -2,7 +2,12 @@ export default {
   TITLE: 'light',
 
   COLORS: {
-    PRIMARY: '#F5F5F5',
+    PRIMARY: '#F7FfF7',
     SECONDARY: '#A5A5A5',
+    TERTIARY: '#FFE66D',
+  },
+
+  TEXT: {
+    TITLE: '#F01b28',
   },
 };
