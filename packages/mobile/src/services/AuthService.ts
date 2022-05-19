@@ -12,4 +12,11 @@ export default class AuthService {
       password: data.password,
     });
   }
+
+  static signUp(data: ILoginDTO): Promise<any> {
+    return api.post('/delivery_boy/create_password', {
+      telephone: data.telephone,
+      password: data.password,
+    });
+  }
 }

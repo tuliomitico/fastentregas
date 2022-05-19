@@ -1,5 +1,5 @@
 import React from 'react';
-import { Icon } from '@rneui/base';
+import { Icon, Text } from '@rneui/base';
 import * as Yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
@@ -8,8 +8,11 @@ import { MaskService } from 'react-native-masked-text';
 import Input from '../../../components/Input';
 import { Container, HomeText, LoginButton } from './styles';
 import { SignInCredentials, useAuth } from '../../../hooks/auth';
+import { TouchableOpacity } from 'react-native-gesture-handler';
+import { useNavigation } from '@react-navigation/native';
 
 const Home: React.FC = () => {
+  const navigation = useNavigation();
   const { signIn } = useAuth();
   const schema = Yup.object().shape({
     telephone: Yup.string()
@@ -60,6 +63,7 @@ const Home: React.FC = () => {
         keyboardType="phone-pad"
         leftIcon={<Icon name="person" size={24} color="white" />}
         color="purple"
+        returnKeyType="next"
       />
       <Input
         errors={errors}
@@ -72,6 +76,25 @@ const Home: React.FC = () => {
         color="purple"
       />
       <LoginButton title={'Entrar'} onPress={handleSubmit(handleLogin)} />
+      <TouchableOpacity
+        onPress={() =>
+          navigation.navigate({
+            name: 'Register' as never,
+            params: {} as never,
+          })
+        }
+      >
+        <Text
+          style={{
+            marginTop: 32,
+            textDecorationLine: 'underline',
+            alignSelf: 'center',
+            color: '#f5f5f5',
+          }}
+        >
+          Sem senha? Clique aqui
+        </Text>
+      </TouchableOpacity>
     </Container>
   );
 };

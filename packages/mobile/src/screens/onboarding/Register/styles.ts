@@ -7,15 +7,7 @@ export const Container = styled.View`
   height: 100%;
 `;
 
-export const HomeText = styled.Text`
-  align-self: center;
-  font-weight: bold;
-  font-size: 32px;
-  color: #f01b28;
-`;
-
-export const LoginButton = styled(Button).attrs(() => ({
-  type: 'solid',
+export const SignupButton = styled(Button).attrs(() => ({
   buttonStyle: {
     backgroundColor: '#01b0f1',
   },
