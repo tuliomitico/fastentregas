@@ -1,9 +1,11 @@
+import re
+
 from models.user import User
 from models.deliveryboy import DeliveryBoy
 
 class CreateDeliveryBoyService():
   def execute(self, name: str, telephone: str):
-    formatted_telephone = telephone.strip()
+    formatted_telephone = re.sub(r'\s+',"",telephone) # Remove white spaces
     user_already_exists: User = User.query.filter_by(telephone = formatted_telephone).first()
     print(user_already_exists)
     if user_already_exists:

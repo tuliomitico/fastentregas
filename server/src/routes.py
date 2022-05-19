@@ -2,6 +2,7 @@ from flask import Blueprint, request
 
 from middlewares.auth import auth
 from modules.deliveryboy.controllers.create_delivery_boy_controller import CreateDeliveryBoyController
+from modules.deliveryboy.controllers.create_password_delivery_boy_controller import CreatePasswordDeliveryBoyController
 from modules.deliverys.controllers.create_delivery_controller import CreateDeliveryController
 from modules.deliverys.controllers.get_delivery_controller import GetDeliveryController
 from modules.users.controllers.authenticate_user_controller import AuthenticateUserController
@@ -44,6 +45,11 @@ def delivery():
 @blp.route('/register/delivery_boy',methods=['POST'])
 def create_motoboy():
   delivery_boy = CreateDeliveryBoyController().handle()
+  return delivery_boy
+
+@blp.route('/delivery_boy/create_password',methods=['POST'])
+def create_password():
+  delivery_boy = CreatePasswordDeliveryBoyController().handle()
   return delivery_boy
 
 @blp.route('/')
