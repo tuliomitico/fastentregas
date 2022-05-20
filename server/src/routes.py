@@ -5,6 +5,7 @@ from modules.deliveryboy.controllers.create_delivery_boy_controller import Creat
 from modules.deliveryboy.controllers.create_password_delivery_boy_controller import CreatePasswordDeliveryBoyController
 from modules.deliverys.controllers.create_delivery_controller import CreateDeliveryController
 from modules.deliverys.controllers.get_delivery_controller import GetDeliveryController
+from modules.employee.controllers.create_employee_controller import CreateEmployeeController
 from modules.users.controllers.authenticate_user_controller import AuthenticateUserController
 from modules.users.controllers.create_user_controller import CreateUserController
 from modules.users.controllers.get_user_controller import GetUserController
@@ -51,6 +52,14 @@ def create_motoboy():
 def create_password():
   delivery_boy = CreatePasswordDeliveryBoyController().handle()
   return delivery_boy
+
+# ====================
+# Employee routes
+# ====================
+@blp.route('/employee',methods=['GET','POST'])
+def employee():
+  employee = CreateEmployeeController().handle()
+  return employee
 
 @blp.route('/')
 def index():

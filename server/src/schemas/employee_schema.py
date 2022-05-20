@@ -4,7 +4,7 @@ from schemas.user_schema import UserSchema
 from .schemas import ma
 from models.employee import Employee
 
-class DeliveryBoySchema(ma.SQLAlchemyAutoSchema):
+class EmployeeSchema(ma.SQLAlchemyAutoSchema):
   class Meta:
     model = Employee
     include_fk = True
