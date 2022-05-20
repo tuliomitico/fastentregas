@@ -30,7 +30,7 @@ def db_session(engine_alt: Engine, tables):
   connection = engine_alt.connect()
   transaction = connection.begin()
   Session.remove()
-  Session.configure(bind=connection)
+  Session.configure(bind=connection,autocommit=False,autoflush=False)
   session: scoped_session = Session()
   yield session
   session.close()
