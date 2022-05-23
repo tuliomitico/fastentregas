@@ -3,9 +3,12 @@ from flask import Blueprint, request
 from middlewares.auth import auth
 from modules.deliveryboy.controllers.create_delivery_boy_controller import CreateDeliveryBoyController
 from modules.deliveryboy.controllers.create_password_delivery_boy_controller import CreatePasswordDeliveryBoyController
+from modules.deliveryboy.controllers.get_delivery_boy_controller import GetDeliveryBoyController
+from modules.deliveryboy.controllers.get_delivery_boys_controller import GetDeliveryBoysController
 from modules.deliverys.controllers.create_delivery_controller import CreateDeliveryController
 from modules.deliverys.controllers.get_delivery_controller import GetDeliveryController
 from modules.employee.controllers.create_employee_controller import CreateEmployeeController
+from modules.employee.controllers.create_password_employee_controller import CreatePasswordEmployeeController
 from modules.users.controllers.authenticate_user_controller import AuthenticateUserController
 from modules.users.controllers.create_user_controller import CreateUserController
 from modules.users.controllers.get_user_controller import GetUserController
@@ -43,6 +46,16 @@ def delivery():
 # ======================
 # Delivery Boy routes
 # ======================
+@blp.route('/delivery_boy/<int:id>')
+def delivery_boy_get(id):
+  delivery_boy = GetDeliveryBoysController().handle(id)
+  return delivery_boy
+
+@blp.route('/delivery_boy')
+def delivery_boy():
+  delivery_boy = GetDeliveryBoyController().handle()
+  return delivery_boy
+
 @blp.route('/register/delivery_boy',methods=['POST'])
 def create_motoboy():
   delivery_boy = CreateDeliveryBoyController().handle()
@@ -59,6 +72,11 @@ def create_password():
 @blp.route('/employee',methods=['GET','POST'])
 def employee():
   employee = CreateEmployeeController().handle()
+  return employee
+
+@blp.route('/employee/create_password',methods=['POST'])
+def employee_create_password():
+  employee = CreatePasswordEmployeeController().handle()
   return employee
 
 @blp.route('/')
