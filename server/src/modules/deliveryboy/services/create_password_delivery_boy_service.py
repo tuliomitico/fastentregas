@@ -1,3 +1,4 @@
+import re
 from passlib.hash import bcrypt
 
 from database.db import db_session
@@ -6,7 +7,8 @@ from models.user import User
 
 class CreatePasswordDeliveryBoyService():
   def execute(self, telephone: str, password: str):
-    user = User.query.filter_by(telephone=telephone).first()
+    formatted_telephone = re.sub(r'\s+','',telephone)
+    user = User.query.filter_by(telephone=formatted_telephone).first()
     if user:
       if user.password:
         raise Exception('Password already created.')
