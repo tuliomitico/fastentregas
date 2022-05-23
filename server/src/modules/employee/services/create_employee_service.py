@@ -11,6 +11,6 @@ class CreateEmployeeService():
       employee_already_exists = Employee.query.filter_by(user_id = user_already_exists.id).first()
       if employee_already_exists:
         raise Exception('Employee already exists.')
-    user = User(name=name,telephone=telephone)
+    user = User(name=name,telephone=formatted_telephone)
     employee = Employee(user=user,shop=shop).create()
     return employee
