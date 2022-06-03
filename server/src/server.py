@@ -2,14 +2,16 @@ import typing as t
 
 from flask import Flask
 
+from .cors import cors
+from .database.db import db_session
 from .routes import blp, blp_auth, blp_delivery
 from .schemas.schemas import ma
-from .database.db import db_session, init_db
 
 def setup_app(app: Flask) -> None:
   @app.teardown_appcontext
   def shutdown_session(exception=None):
     db_session.remove()
+  cors.init_app(app, resources=r'/*')
   ma.init_app(app)
 
 def create_app(config: t.Union[str,t.Dict[str,str],None] = None) -> Flask:
