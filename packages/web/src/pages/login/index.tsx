@@ -125,7 +125,6 @@ export default function Home() {
               fullWidth
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
-              onClick={handleSubmit(handleSignIn)}
             >
               Entrar
             </Button>

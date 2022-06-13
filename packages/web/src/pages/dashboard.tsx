@@ -11,21 +11,17 @@ import TableRow from '@mui/material/TableRow';
 
 import Layout from '../components/Layout';
 import { getAPIClient } from '../services/axios';
+import { Typography } from '@mui/material';
 
-const DATA = [
-  {
-    deliver: '543251',
-    hour: '20:30',
-    address: 'Rua dos Bobos, 0, São Nunca',
-    telephone: '34 1234-5678',
-    name: 'João Ninguém',
-    date: '20/02/2022',
-  },
-];
+type Props = {
+  name: string;
+  deliverys: Array<any>;
+};
 
-export default function Dashboard() {
+export default function Dashboard(props: Props) {
   return (
     <Layout>
+      <Typography>Olá, {props.name}</Typography>
       <TableContainer component={Paper}>
         <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
           <TableHead>
@@ -36,20 +32,31 @@ export default function Dashboard() {
               <TableCell align="right">Telefone do cliente</TableCell>
               <TableCell align="right">Nome do cliente</TableCell>
               <TableCell align="right">Data</TableCell>
+              <TableCell align="right">Status</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            {DATA.map(row => (
+            {props.deliverys.map(row => (
               <TableRow
                 key={row.name}
                 sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
               >
-                <TableCell scope="row">{row.deliver}</TableCell>
+                <TableCell scope="row">{row.id}</TableCell>
                 <TableCell align="right">{row.hour}</TableCell>
-                <TableCell align="right">{row.address}</TableCell>
+                <TableCell align="right">
+                  {row.address.st_or_av}, {row.address.number} -{' '}
+                  {row.address.district}
+                </TableCell>
                 <TableCell align="right">{row.telephone}</TableCell>
                 <TableCell align="right">{row.name}</TableCell>
-                <TableCell align="right">{row.date}</TableCell>
+                <TableCell align="right">?</TableCell>
+                <TableCell align="right">
+                  {row.status === 'avaliable'
+                    ? 'Aberto'
+                    : row.status === 'closed'
+                    ? 'Finalizado'
+                    : 'Em rota'}
+                </TableCell>
               </TableRow>
             ))}
           </TableBody>
@@ -72,9 +79,17 @@ export const getServerSideProps: GetServerSideProps = async ctx => {
     };
   }
 
-  await apiClient.get('/user');
+  const {
+    data: {
+      user: { name },
+    },
+  } = await apiClient.get('/user');
+  const {
+    data: { deliverys },
+  } = await apiClient.get('/deliver');
+  console.log(name);
 
   return {
-    props: {},
+    props: { name, deliverys },
   };
 };
