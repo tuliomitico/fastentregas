@@ -3,8 +3,11 @@ from flask import Blueprint, request
 from middlewares.auth import auth
 from modules.deliveryboy.controllers.create_delivery_boy_controller import CreateDeliveryBoyController
 from modules.deliveryboy.controllers.create_password_delivery_boy_controller import CreatePasswordDeliveryBoyController
+from modules.deliveryboy.controllers.delete_delivery_of_delivery_boy_controller import DeleteDeliveryOfDeliveryBoyController
 from modules.deliveryboy.controllers.get_delivery_boy_controller import GetDeliveryBoyController
 from modules.deliveryboy.controllers.get_delivery_boys_controller import GetDeliveryBoysController
+from modules.deliveryboy.controllers.get_delivery_controller import GetDeliveryController as GetDeliveryDeliveryBoyController
+from modules.deliveryboy.controllers.view_delivery_got_controller import ViewDeliveryGotController
 from modules.deliverys.controllers.create_delivery_controller import CreateDeliveryController
 from modules.deliverys.controllers.get_delivery_controller import GetDeliveryController
 from modules.employee.controllers.create_employee_controller import CreateEmployeeController
@@ -27,7 +30,7 @@ def login():
 
 @blp_auth.route('/register',methods=['POST'])
 def register():
-  "Create a new user"
+  """Create a new user"""
   user = CreateUserController().handle()
   return user
 
@@ -37,6 +40,7 @@ def register():
 @blp_delivery.route('/deliver',methods=['GET','POST'])
 def delivery():
   if request.method == 'POST':
+    """Create a new delivery"""
     delivery = CreateDeliveryController().handle()
     return delivery
   else:
@@ -51,7 +55,7 @@ def delivery_boy_get(id):
   delivery_boy = GetDeliveryBoysController().handle(id)
   return delivery_boy
 
-@blp.route('/delivery_boy')
+@blp.route('/delivery_boys')
 def delivery_boy():
   delivery_boy = GetDeliveryBoyController().handle()
   return delivery_boy
@@ -65,6 +69,22 @@ def create_motoboy():
 def create_password():
   delivery_boy = CreatePasswordDeliveryBoyController().handle()
   return delivery_boy
+
+@blp.route('/delivery_boy/deliver')
+@blp.route('/delivery_boy/deliver/<int:pk>',methods=['POST','DELETE'])
+@auth.login_required
+def catch_deliver(pk=None):
+  if request.method == 'GET':
+    delivery_boy = ViewDeliveryGotController().handle()
+    return delivery_boy
+
+  elif request.method == 'DELETE':
+    delivery_boy = DeleteDeliveryOfDeliveryBoyController().handle(pk)
+    return delivery_boy
+
+  elif request.method == 'POST':
+    delivery_boy = GetDeliveryDeliveryBoyController().handle(pk)
+    return delivery_boy
 
 # ====================
 # Employee routes
