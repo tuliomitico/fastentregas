@@ -1,6 +1,12 @@
-import React, { createContext, useState, useEffect, useContext } from 'react';
+import React, {
+  createContext,
+  useState,
+  useEffect,
+  useContext,
+  useCallback,
+} from 'react';
 import { useRouter } from 'next/router';
-import { parseCookies, setCookie } from 'nookies';
+import { destroyCookie, parseCookies, setCookie } from 'nookies';
 
 import api from '@fastentregas/axios-config';
 import AuthService from '../services/AuthService';
@@ -19,6 +25,7 @@ type AuthContextType = {
   isAuthenticated: boolean;
   user: User;
   signIn: (data: SignInData) => Promise<void>;
+  signOut: () => void;
 };
 
 const AuthContext = createContext<AuthContextType>({} as AuthContextType);
@@ -33,7 +40,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   async function signIn({ telephone, password }: SignInData) {
-    const { token, user } = AuthService.signIn({ telephone, password });
+    const {
+      data: { token, user },
+    } = await AuthService.signIn({ telephone, password });
 
     setCookie(undefined, 'nextauth.token', token, {
       maxAge: 60 * 60 * 1, // 1 hour
@@ -44,8 +53,13 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     setUser(user);
     router.push('/dashboard');
   }
+  const signOut = useCallback(async () => {
+    destroyCookie(undefined, 'nextauth.token');
+    setUser(null);
+  }, []);
+
   return (
-    <AuthContext.Provider value={{ isAuthenticated, signIn, user }}>
+    <AuthContext.Provider value={{ isAuthenticated, signIn, user, signOut }}>
       {children}
     </AuthContext.Provider>
   );

@@ -1,6 +1,7 @@
 import React from 'react';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
+import Link from '@mui/material/Link';
 import Toolbar from '@mui/material/Toolbar';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
@@ -12,11 +13,13 @@ import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import { Moped } from '@mui/icons-material';
+import { useAuth } from '../../hooks/AuthContext';
 
 const pages = ['Entregas', 'Lojas', 'Motoristas Parceiros'];
 const settings = ['Perfil', 'Conta', 'Dashboard', 'Sair'];
 
 export default function NavBar() {
+  const { signOut } = useAuth();
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(
     null,
   );
@@ -35,8 +38,9 @@ export default function NavBar() {
     setAnchorElNav(null);
   };
 
-  const handleCloseUserMenu = () => {
+  const handleCloseUserMenu = async () => {
     setAnchorElUser(null);
+    await signOut();
   };
 
   return (
@@ -111,7 +115,7 @@ export default function NavBar() {
           </Box>
 
           <Box sx={{ flexGrow: 0 }}>
-            <Tooltip title="Open settings">
+            <Tooltip title="Abrir as configurações">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
                 <Avatar
                   alt="Túlio Brabo"
@@ -137,7 +141,15 @@ export default function NavBar() {
             >
               {settings.map(setting => (
                 <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                  <Typography textAlign="center">{setting}</Typography>
+                  {setting === 'Sair' ? (
+                    <Typography textAlign="center">
+                      <Link href={'/login'} color="inherit" underline="none">
+                        {setting}
+                      </Link>
+                    </Typography>
+                  ) : (
+                    <Typography textAlign="center">{setting}</Typography>
+                  )}
                 </MenuItem>
               ))}
             </Menu>
