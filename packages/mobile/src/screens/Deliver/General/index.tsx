@@ -1,12 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { ListRenderItem } from 'react-native';
-// import { ListItem } from '@rneui/base';
-// import Icon from 'react-native-vector-icons/MaterialIcons';
-
-import api from '@fastentregas/axios-config';
-import { Container, GeneralText } from './styles';
 import { FlatList } from 'react-native-gesture-handler';
+
+import { Container, GeneralText } from './styles';
 import Item from '../../../components/Item';
+import DeliverService from '../../../services/DeliverService';
 
 type AddressDataProps = {
   district: string;
@@ -28,6 +26,12 @@ type DeliveryData = {
 const General: React.FC = () => {
   const [data, setData] = useState([] as DeliveryDataProps[]);
   const [selectedItems, setSelectedItems] = useState<string[]>([]);
+
+  const getOpenDeliveryList = async () => {
+    const delivery: DeliveryData = await DeliverService.openDelivery();
+    setData(delivery.deliverys);
+  };
+
   const handleOnPress = item => {
     if (selectedItems.length) {
       return selectItems(item.id);
@@ -49,10 +53,7 @@ const General: React.FC = () => {
   };
 
   useEffect(() => {
-    api
-      .get<DeliveryData>('/deliver')
-      .then(response => response.data)
-      .then(data => setData(data.deliverys));
+    getOpenDeliveryList();
   }, []);
 
   const renderItems: ListRenderItem<DeliveryDataProps> = ({ item }) => {
