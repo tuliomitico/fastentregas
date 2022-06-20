@@ -1,40 +1,75 @@
 from functools import wraps
+from http import HTTPStatus
 
-from flask import request, current_app, g
-import jwt
+from flask import g
+from flask_jwt_extended import verify_jwt_in_request, current_user
 
-from models.user import User
+from models.admin import Admin
+from models.deliveryboy import DeliveryBoy
+from models.employee import Employee
 
 class Auth():
-  def login_required(self,f=None):
-    def login_required_internal(f):
+  def admin_required(self,f=None):
+    def admin_required_internal(f):
       @wraps(f)
       def decorator(*args,**kwargs):
-        authorization = None
-        if 'Authorization' in request.headers:
-          authorization = request.headers.get('Authorization','').split()
-        if not authorization:
-          return {'message': 'A valid token is missing'}, 403
-        if len(authorization) == 2:
-          try:
-            token = authorization[1]
-            data = jwt.decode(
-              token,
-              current_app.config.get('SECRET_KEY'),
-              algorithms=['HS256']
-            )
-            user_exists = User.query.filter_by(name=data['sub']).first()
-
-            if user_exists:
-              g.user = user_exists.name
-          except:
-            return {'error': 'the token is invalid'}, 403
+        verify_jwt_in_request()
+        admin_exists = Admin.query.filter_by(user_id=current_user.id).first()
+        if admin_exists:
           return f(*args,**kwargs)
+        else:
+          return {'message': 'Admins only.'}, HTTPStatus.FORBIDDEN
       return decorator
     if f:
-      return login_required_internal(f)
-    return login_required_internal
+      return admin_required_internal(f)
+    return admin_required_internal
+
+  def employee_required(self,f=None):
+    def employee_required_internal(f):
+      @wraps(f)
+      def decorator(*args,**kwargs):
+        verify_jwt_in_request()
+        employee_exists = Employee.query.filter_by(user_id=g.user['id']).first()
+        if employee_exists:
+          return f(*args,**kwargs)
+        else:
+          return {'message': 'Employee only.'}, HTTPStatus.FORBIDDEN
+      return decorator
+    if f:
+      return employee_required_internal(f)
+    return employee_required_internal
+
+  def admin_or_employee_required(self,f=None):
+    def admin_or_employee_required_internal(f):
+      @wraps(f)
+      def decorator(*args,**kwargs):
+        verify_jwt_in_request()
+        admin_exists = Admin.query.filter_by(user_id=current_user.id).first()
+        employee_exists = Employee.query.filter_by(user_id=current_user.id).first()
+        if admin_exists or employee_exists:
+          return f(*args,**kwargs)
+        else:
+          return {'message': 'Admin or employee only.'}, HTTPStatus.FORBIDDEN
+      return decorator
+    if f:
+      return admin_or_employee_required_internal(f)
+    return admin_or_employee_required_internal
+
+  def deliveryboy_required(self,f=None):
+    def deliveryboy_required_internal(f):
+      @wraps(f)
+      def decorator(*args,**kwargs):
+        verify_jwt_in_request()
+        deliveryboy_exists = DeliveryBoy.query.filter_by(user_id=current_user.id).first()
+        if deliveryboy_exists:
+          return f(*args,**kwargs)
+        else:
+          return {'message': 'Delivery boy only.'}, HTTPStatus.FORBIDDEN
+      return decorator
+    if f:
+      return deliveryboy_required_internal(f)
+    return deliveryboy_required_internal
 
   def current_user(self):
     if hasattr(g,'user'):
-      return g.user
+      return g.user['name']

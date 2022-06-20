@@ -1,3 +1,4 @@
+import datetime
 import os
 from pathlib import Path
 
@@ -7,6 +8,7 @@ class Config:
   DEVELOPMENT = False
   TESTING = False
   SECRET_KEY = os.getenv('SECRET_KEY')
+  JWT_ACCESS_TOKEN = datetime.timedelta(minutes=45)
 
 class ProductionConfig(Config):
   pass

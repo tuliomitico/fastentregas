@@ -16,12 +16,12 @@ class AuthenticateUserController():
         password = data['password']
       )
       token = jwt.encode({
-        "sub": user.name,
+        "sub": user['user'].user.name,
         "iat": datetime.utcnow(),
         "exp": datetime.utcnow() + timedelta(minutes=45)
       },
       current_app.config.get('SECRET_KEY'),
       algorithm='HS256')
-      return { "token": token }, HTTPStatus.OK
+      return { "token": token, "user": { "role": user['role'] } }, HTTPStatus.OK
     except Exception as e:
       return jsonify({"error": str(e)}), HTTPStatus.UNAUTHORIZED

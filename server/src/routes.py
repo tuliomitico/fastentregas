@@ -1,4 +1,5 @@
 from flask import Blueprint, request
+from flask_jwt_extended import current_user, jwt_required
 
 from middlewares.auth import auth
 from modules.deliveryboy.controllers.create_delivery_boy_controller import CreateDeliveryBoyController
@@ -72,7 +73,7 @@ def create_password():
 
 @blp.route('/delivery_boy/deliver')
 @blp.route('/delivery_boy/deliver/<int:pk>',methods=['POST','DELETE'])
-@auth.login_required
+@auth.deliveryboy_required
 def catch_deliver(pk=None):
   if request.method == 'GET':
     delivery_boy = ViewDeliveryGotController().handle()
@@ -90,6 +91,7 @@ def catch_deliver(pk=None):
 # Employee routes
 # ====================
 @blp.route('/employee',methods=['GET','POST'])
+@auth.admin_required
 def employee():
   employee = CreateEmployeeController().handle()
   return employee
@@ -105,12 +107,12 @@ def index():
 
 # ! Test route
 @blp.route('/users',methods=['GET'])
-@auth.login_required
+@jwt_required()
 def get_users():
   users = GetUserController().handle()
   return {**users[0],'user': auth.current_user()}, users[1]
 
 @blp.route('/user')
-@auth.login_required
+@jwt_required()
 def get_current_user():
-  return {'user': {'name': auth.current_user() }}
+  return {'user': {'name': current_user.name }}

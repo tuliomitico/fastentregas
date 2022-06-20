@@ -10,4 +10,4 @@ class DeliveryBoySchema(ma.SQLAlchemyAutoSchema):
     include_fk = True
 
   user = fields.Nested(UserSchema)
-  deliverys = fields.Nested(DeliverySchema,many=True)
+  deliverys = fields.Nested(DeliverySchema(exclude=['status']),many=True)
