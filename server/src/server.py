@@ -4,6 +4,7 @@ from flask import Flask
 
 from .cors import cors
 from .database.db import db_session
+from .middlewares.jwt import jwt
 from .routes import blp, blp_auth, blp_delivery
 from .schemas.schemas import ma
 
@@ -11,6 +12,7 @@ def setup_app(app: Flask) -> None:
   @app.teardown_appcontext
   def shutdown_session(exception=None):
     db_session.remove()
+  jwt.init_app(app)
   cors.init_app(app, resources=r'/*')
   ma.init_app(app)
 
