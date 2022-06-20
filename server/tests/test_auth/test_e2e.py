@@ -2,7 +2,7 @@ import factory
 from flask.testing import FlaskClient
 
 from tests.factories import UserFactory
-from models.user import User
+from models.employee import Employee
 
 def test_authenticate_user(client: FlaskClient,db_session):
   db = factory.build(
@@ -10,7 +10,7 @@ def test_authenticate_user(client: FlaskClient,db_session):
     FACTORY_CLASS = UserFactory
   )
   res = client.post('/register',json=db)
-  u = User.query.all()[0]
+  Employee(user_id=res.json['data']['id']).create()
   res1 = client.post('/login',json={'telephone':db['telephone'],'password':db['password']})
   assert res1.status_code == 200
 

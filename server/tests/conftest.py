@@ -1,13 +1,16 @@
 from datetime import datetime, timedelta
+
 from flask import Flask
 import jwt
-
 import pytest
 from sqlalchemy import create_engine
 from sqlalchemy.engine import Engine, Connection
 from sqlalchemy.orm import  scoped_session, sessionmaker
-from src.server import create_app
+
 from database.db import Base, db_session as Session
+from models.admin import Admin
+from models.user import User
+from src.server import create_app
 
 engine = create_engine('sqlite:///database.sqlite3', echo=True)
 TestingLocalSession = scoped_session(sessionmaker(
@@ -63,9 +66,17 @@ def client(app: Flask):
   return app.test_client()
 
 @pytest.fixture
-def login(app: Flask):
+def admin(db_session):
+  user = User(name='test',telephone='0012345678',password='test')
+  admin = Admin(user=user)
+  db_session.add(admin)
+  db_session.commit()
+  return admin
+
+@pytest.fixture
+def login(app: Flask, admin):
   return jwt.encode({
-    'sub':'test',
+    'sub': 'test',
     'iat': datetime.utcnow(),
     'exp': datetime.utcnow() + timedelta(minutes=1)
     },
