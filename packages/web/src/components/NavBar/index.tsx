@@ -1,3 +1,4 @@
+'use client';
 import React from 'react';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
@@ -40,20 +41,13 @@ export default function NavBar() {
 
   const handleCloseUserMenu = async () => {
     setAnchorElUser(null);
-    await signOut();
+    signOut();
   };
 
   return (
     <AppBar position="static">
       <Container maxWidth="xl">
         <Toolbar disableGutters>
-          {/* <Typography
-            variant="h6"
-            noWrap
-            component="div"
-            sx={{ mr: 2, display: { xs: 'none', md: 'flex' } }}
-          >
-          </Typography> */}
           <IconButton size="large" color="inherit">
             <Moped />
           </IconButton>

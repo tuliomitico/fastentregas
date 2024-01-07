@@ -5,8 +5,8 @@ import React, {
   useContext,
   useCallback,
 } from 'react';
-import { useRouter } from 'next/router';
-import { destroyCookie, parseCookies, setCookie } from 'nookies';
+import { useRouter } from 'next/navigation';
+import { setCookie, destroyCookie, parseCookies } from 'nookies';
 
 import api from '@fastentregas/axios-config';
 import AuthService from '../services/AuthService';
@@ -39,7 +39,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     const { 'nextauth.token': token } = parseCookies();
   }, []);
 
-  async function signIn({ telephone, password }: SignInData) {
+  const signIn = useCallback(async ({ telephone, password }: SignInData) => {
     const {
       data: { token, user },
     } = await AuthService.signIn({ telephone, password });
@@ -52,7 +52,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
     setUser(user);
     router.push('/dashboard');
-  }
+  }, []);
+
   const signOut = useCallback(async () => {
     destroyCookie(undefined, 'nextauth.token');
     setUser(null);

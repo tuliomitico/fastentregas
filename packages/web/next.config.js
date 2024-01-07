@@ -1,10 +1,6 @@
-const withTM = require('next-transpile-modules')([
-  '@mui/material',
-  '@mui/system',
-  '@mui/icons-material', // If @mui/icons-material is being used
-]);
-
-module.exports = withTM({
+/** @type {import('next').NextConfig} */
+const nextConfig = {
+  transpilePackages: ['@mui/material', '@mui/system', '@mui/icons-material'],
   reactStrictMode: true,
   webpack: config => {
     config.resolve.alias = {
@@ -13,4 +9,9 @@ module.exports = withTM({
     };
     return config;
   },
-});
+  compiler: {
+    styledComponents: true,
+  },
+};
+
+module.exports = nextConfig;

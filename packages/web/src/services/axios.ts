@@ -1,8 +1,8 @@
 import api from '@fastentregas/axios-config';
-import { parseCookies } from 'nookies';
+import { cookies } from 'next/headers';
 
-export function getAPIClient(ctx?: any) {
-  const { 'nextauth.token': token } = parseCookies(ctx);
+export function getAPIClient() {
+  const token = cookies().get('nextauth.token')?.value ?? null;
 
   api.interceptors.request.use(config => {
     return config;

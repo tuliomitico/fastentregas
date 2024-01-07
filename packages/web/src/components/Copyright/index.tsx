@@ -1,9 +1,9 @@
-import React from 'react';
-import Link from '@mui/material/Link';
-import Typography from '@mui/material/Typography';
+import React, { ComponentProps } from 'react';
+import Link from 'next/link';
+import { Typography } from '@mui/material';
 
 export default function Copyright(
-  props: typeof Typography,
+  props: ComponentProps<typeof Typography>,
 ): React.ReactElement {
   return (
     <Typography
@@ -13,7 +13,7 @@ export default function Copyright(
       {...props}
     >
       {'Copyright © '}
-      <Link color="inherit" href="/">
+      <Link href={'/'} style={{ color: 'inherit' }}>
         Fast Entregas
       </Link>{' '}
       {new Date().getFullYear()}

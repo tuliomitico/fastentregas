@@ -1,27 +1,39 @@
 import React from 'react';
-import { GetServerSideProps } from 'next';
-import { parseCookies } from 'nookies';
-import Paper from '@mui/material/Paper';
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
-import TableHead from '@mui/material/TableHead';
-import TableRow from '@mui/material/TableRow';
+import { cookies } from 'next/headers';
+import { redirect } from 'next/navigation';
+import {
+  Paper,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Typography,
+} from '@mui/material';
 
-import Layout from '../components/Layout';
-import { getAPIClient } from '../services/axios';
-import { Typography } from '@mui/material';
+import { getAPIClient } from '../../../services/axios';
 
-type Props = {
-  name: string;
-  deliverys: Array<any>;
-};
+export default async function Dashboard() {
+  const apiClient = getAPIClient();
+  const token = cookies().get('nextauth.token')?.value ?? null;
+  if (!token) {
+    return redirect('/');
+  }
 
-export default function Dashboard(props: Props) {
+  const {
+    data: {
+      user: { name },
+    },
+  } = await apiClient.get('/user');
+
+  const {
+    data: { deliverys },
+  } = await apiClient.get('/deliver');
+
   return (
-    <Layout>
-      <Typography>Olá, {props.name}</Typography>
+    <>
+      <Typography>Olá, {name}</Typography>
       <TableContainer component={Paper}>
         <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
           <TableHead>
@@ -36,7 +48,7 @@ export default function Dashboard(props: Props) {
             </TableRow>
           </TableHead>
           <TableBody>
-            {props.deliverys.map(row => (
+            {deliverys.map(row => (
               <TableRow
                 key={row.name}
                 sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
@@ -62,34 +74,6 @@ export default function Dashboard(props: Props) {
           </TableBody>
         </Table>
       </TableContainer>
-    </Layout>
+    </>
   );
 }
-
-export const getServerSideProps: GetServerSideProps = async ctx => {
-  const apiClient = getAPIClient(ctx);
-  const { 'nextauth.token': token } = parseCookies(ctx);
-
-  if (!token) {
-    return {
-      redirect: {
-        destination: '/',
-        permanent: false,
-      },
-    };
-  }
-
-  const {
-    data: {
-      user: { name },
-    },
-  } = await apiClient.get('/user');
-  const {
-    data: { deliverys },
-  } = await apiClient.get('/deliver');
-  console.log(name);
-
-  return {
-    props: { name, deliverys },
-  };
-};

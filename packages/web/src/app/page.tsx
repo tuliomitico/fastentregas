@@ -1,13 +1,14 @@
 import React from 'react';
-import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
-import Container from '@mui/material/Container';
-import CssBaseline from '@mui/material/CssBaseline';
-import Grid from '@mui/material/Grid';
-import Typography from '@mui/material/Typography';
-import { GetServerSideProps } from 'next';
+import {
+  Box,
+  CssBaseline,
+  Container,
+  Grid,
+  Typography,
+  Button,
+} from '@mui/material';
 
-export default function Home() {
+export default async function Home() {
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
       <CssBaseline />
@@ -38,9 +39,3 @@ export default function Home() {
     </Box>
   );
 }
-
-export const getServerSideProps: GetServerSideProps = async ctx => {
-  return {
-    props: {},
-  };
-};
