@@ -18,7 +18,7 @@
     "@mui/material-nextjs": "^5.15.3",
     "@mui/styled-engine-sc": "~6.0.0-alpha.11",
     "@types/cookie": "^0.5.1",
-    "next": "^14.2.32",
+    "next": "~14.2.35",
     "next-transpile-modules": "^10.0.0",
     "react": "^18",
     "react-dom": "^18",
