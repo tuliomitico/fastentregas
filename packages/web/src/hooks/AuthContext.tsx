@@ -6,7 +6,7 @@ import React, {
   useCallback,
 } from 'react';
 import { useRouter } from 'next/navigation';
-import { setCookie, destroyCookie, parseCookies } from 'nookies';
+import Cookies from 'universal-cookie';
 
 import api from '@fastentregas/axios-config';
 import AuthService from '../services/AuthService';
@@ -33,10 +33,11 @@ const AuthContext = createContext<AuthContextType>({} as AuthContextType);
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const router = useRouter();
+  const cookie = new Cookies();
   const isAuthenticated = !!user;
 
   useEffect(() => {
-    const { 'nextauth.token': token } = parseCookies();
+    const token = cookie.get('nextauth.token');
   }, []);
 
   const signIn = useCallback(async ({ telephone, password }: SignInData) => {
@@ -44,7 +45,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       data: { token, user },
     } = await AuthService.signIn({ telephone, password });
 
-    setCookie(undefined, 'nextauth.token', token, {
+    cookie.set('nextauth.token', token, {
       maxAge: 60 * 60 * 1, // 1 hour
     });
 
@@ -55,7 +56,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   const signOut = useCallback(async () => {
-    destroyCookie(undefined, 'nextauth.token');
+    cookie.remove('nextauth.token');
     setUser(null);
   }, []);
 
