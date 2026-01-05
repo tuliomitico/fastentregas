@@ -13,13 +13,12 @@
     "@emotion/react": "^11.11.3",
     "@fastentregas/axios-config": "*",
     "@hookform/resolvers": "^2.8.8",
-    "@mui/icons-material": "^5.15.3",
-    "@mui/material": "^5.15.3",
-    "@mui/material-nextjs": "^5.15.3",
-    "@mui/styled-engine-sc": "~6.0.0-alpha.11",
-    "@types/cookie": "^0.5.1",
+    "@mui/icons-material": "^5.16.14",
+    "@mui/material": "^5.16.14",
+    "@mui/material-nextjs": "^5.16.14",
+    "@mui/styled-engine-sc": "~6.4.9",
+    "universal-cookie": "~8.0.1",
     "next": "~14.2.35",
-    "next-transpile-modules": "^10.0.0",
     "react": "^18",
     "react-dom": "^18",
     "react-hook-form": "^7.30.0",
@@ -30,6 +29,7 @@
   },
   "devDependencies": {
     "@types/react": "^17.0.21",
-    "@types/react-input-mask": "^3.0.1"
+    "@types/react-input-mask": "^3.0.1",
+    "@types/cookie": "^0.5.1"
   }
 }
