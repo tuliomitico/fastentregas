@@ -1,8 +1,12 @@
 'use client';
 import React from 'react';
-import { ThemeProvider } from '@mui/material/styles';
+import { ThemeProvider, createTheme } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import { EmotionCacheProvider } from '../EmotionCache';
+
+const theme = createTheme({
+  spacing: 8,
+});
 
 export default function ThemeRegistry({
   children,
@@ -11,10 +15,8 @@ export default function ThemeRegistry({
 }): JSX.Element {
   return (
     <EmotionCacheProvider options={{ key: 'mui' }}>
-      <ThemeProvider theme={{}}>
-        <CssBaseline />
-        {children}
-      </ThemeProvider>
+      <CssBaseline />
+      <ThemeProvider theme={theme}>{children}</ThemeProvider>
     </EmotionCacheProvider>
   );
 }
