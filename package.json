@@ -11,6 +11,6 @@
   },
   "devDependencies": {
     "@fastentregas/eslint-config": "*",
-    "typescript": "^4.6.3"
+    "typescript": "^5"
   }
 }
